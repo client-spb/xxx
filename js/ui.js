@@ -35,7 +35,7 @@ function closeOv(id) { closeOverlay(id); flushPopups(); }
 function fxText(text, x, y, color) {
   const e = el('div', 'fx-float', '');
   e.textContent = text;
-  e.style.left = x + 'px'; e.style.top = y + 'px';
+  e.style.left = (x * UIK) + 'px'; e.style.top = (y * UIK) + 'px';
   if (color) e.style.color = color;
   $('fxLayer').appendChild(e);
   setTimeout(() => e.remove(), 1500);
@@ -174,6 +174,7 @@ async function goFishing(id) {
   await ASSETS.ensure(paths);
   closeAllOverlays();
   startSession(id);
+  if (Math.random() < 0.6) rollWeather();
   showScreen('fish');
   VIEW.t = 0;
   hudInit();
@@ -1017,9 +1018,15 @@ function genQuest() {
   if (q.type === 'trip') { q.money = Math.round(q.kg * 60 * mult / 10) * 10; q.xp = Math.round(q.kg * 12 * mult); }
   return q;
 }
+function questKey(q) { return q.type + ':' + (q.sp || q.rig || q.loc || ''); }
 function ensureQuests() {
   SAVE.quests = SAVE.quests.filter(q => !q.claimed);
-  while (SAVE.quests.length < 3) SAVE.quests.push(genQuest());
+  let guard = 0;
+  while (SAVE.quests.length < 3 && guard++ < 50) {
+    const q = genQuest();
+    if (SAVE.quests.some(o => questKey(o) === questKey(q))) continue;
+    SAVE.quests.push(q);
+  }
 }
 function questEvent(e) {
   let changed = false;
@@ -1075,7 +1082,9 @@ function renderQuests() {
         if (SAVE.money < 100) { AUD.error(); toast('Замена стоит 100 ₽'); return; }
         SAVE.money -= 100;
         const i = SAVE.quests.indexOf(q);
-        SAVE.quests[i] = genQuest();
+        let nq = genQuest(), guard = 0;
+        while (guard++ < 30 && SAVE.quests.some(o => questKey(o) === questKey(nq))) nq = genQuest();
+        SAVE.quests[i] = nq;
         sfxClick(); persist(); renderQuests(); renderMenu();
       });
       row.appendChild(b);

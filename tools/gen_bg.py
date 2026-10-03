@@ -505,5 +505,5 @@ if __name__ == '__main__':
         for tod in TODS:
             im, hz = render(loc, tod)
             p = os.path.join(OUT, f'{loc}_{tod}.jpg')
-            im.save(p, quality=90, optimize=True, progressive=True)
+            im.save(p, quality=93, optimize=True, progressive=True)
             print(p, os.path.getsize(p) // 1024, 'KB', 'hz', hz)

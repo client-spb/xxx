@@ -420,7 +420,7 @@ def gen_music(name):
     cfg = dict(MUSIC[name])
     st = compose(name, **cfg)
     p = os.path.join(ROOT, 'music', name + '.mp3')
-    write_mp3(p, st, '128k')
+    write_mp3(p, st, '160k')
     return name, os.path.getsize(p)
 
 

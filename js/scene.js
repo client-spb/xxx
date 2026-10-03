@@ -262,14 +262,19 @@ function rodGeometry(W, H, target) {
   let bend = 0;
   const st = rigStats();
   if (st.rod) bend = clamp(G.tensionShow / st.rod.power, 0, 1.3);
-  if (G.phase === 'bite' && G.rigType === 'feeder' && G.bite) bend = Math.max(bend, 0.25);
-  if (G.bite && G.bite.twitch > 0 && G.rigType === 'feeder') bend = Math.max(bend, 0.08 * G.bite.twitch);
+  let tipKick = 0;
+  if (G.rigType === 'feeder' && G.bite) {
+    if (G.phase === 'bite') tipKick = 0.55 + 0.25 * Math.sin(VIEW.t * 9);
+    else if (G.bite.twitch > 0) tipKick = 0.2 * G.bite.twitch * (0.6 + 0.4 * Math.sin(VIEW.t * 40));
+  }
+  if (G.rigType === 'feeder' && G.phase === 'wait' && G.bobberNoise > 0) tipKick = 0.06 * G.bobberNoise * Math.sin(VIEW.t * 30);
   if (G.phase === 'snag') bend = 0.7 + Math.sin(VIEW.t * 20) * 0.05;
   if (target && bend > 0) {
     const dx = target.x - tip.x, dy = target.y - tip.y;
     const L = Math.hypot(dx, dy) || 1;
     tip = { x: tip.x + dx / L * bend * H * 0.16, y: tip.y + dy / L * bend * H * 0.22 + bend * H * 0.06 };
   }
+  if (tipKick) { tip = { x: tip.x - tipKick * W * 0.025, y: tip.y + tipKick * H * 0.16 }; bend = Math.max(bend, tipKick * 0.5); }
   const mid = { x: lerp(butt.x, tip.x, 0.55) + bend * W * 0.01, y: lerp(butt.y, tip.y, 0.55) - bend * H * 0.06 - H * 0.02 };
   return { butt, tip, mid, bend };
 }
@@ -654,19 +659,52 @@ function drawAngler(g, W, H, hzY, t) {
   }
   g.fillStyle = '#1c120a';
   for (const ox of [-20, 100]) { g.fillRect(px + ox * s, py, 8 * s, 30 * s); }
-  // рыбак
+  // рыбак: сидит на ящике, ноги свешены с мостков
   const ax = px + 40 * s, ay = py;
-  g.fillStyle = '#1a120c';
-  g.beginPath(); g.ellipse(ax, ay - 34 * s, 16 * s, 24 * s, 0, 0, 6.29); g.fill(); // спина
-  g.beginPath(); g.arc(ax + 2 * s, ay - 64 * s, 10 * s, 0, 6.29); g.fill(); // голова
-  g.beginPath(); g.ellipse(ax + 2 * s, ay - 70 * s, 16 * s, 4 * s, 0, 0, 6.29); g.fill(); // шляпа
-  g.beginPath(); g.ellipse(ax + 2 * s, ay - 75 * s, 9 * s, 6 * s, 0, 0, 6.29); g.fill();
-  g.fillRect(ax - 14 * s, ay - 14 * s, 36 * s, 10 * s); // ящик
-  // удочка
   const sway = Math.sin(t * 0.8) * 4 * s;
-  const tipx = ax - 170 * s, tipy = ay - 150 * s + sway;
-  g.strokeStyle = '#1a120c'; g.lineWidth = 3 * s;
-  g.beginPath(); g.moveTo(ax + 6 * s, ay - 30 * s); g.quadraticCurveTo(ax - 80 * s, ay - 120 * s, tipx, tipy); g.stroke();
+  const breath = Math.sin(t * 1.6) * 0.8 * s;
+  g.fillStyle = '#17100a';
+  // ящик
+  g.fillRect(ax - 4 * s, ay - 16 * s, 30 * s, 16 * s);
+  g.fillStyle = '#2a1c10'; g.fillRect(ax - 4 * s, ay - 16 * s, 30 * s, 3 * s);
+  g.fillStyle = '#17100a';
+  // ноги
+  g.beginPath();
+  g.moveTo(ax + 2 * s, ay - 18 * s);
+  g.quadraticCurveTo(ax - 14 * s, ay - 22 * s, ax - 26 * s, ay - 16 * s);
+  g.lineTo(ax - 30 * s, ay + 10 * s);
+  g.lineTo(ax - 22 * s, ay + 12 * s);
+  g.lineTo(ax - 18 * s, ay - 8 * s);
+  g.quadraticCurveTo(ax - 8 * s, ay - 10 * s, ax + 6 * s, ay - 10 * s);
+  g.closePath(); g.fill();
+  g.beginPath(); g.ellipse(ax - 28 * s, ay + 12 * s, 7 * s, 3 * s, 0, 0, 6.29); g.fill();
+  // туловище в куртке
+  g.beginPath();
+  g.moveTo(ax + 8 * s, ay - 16 * s);
+  g.quadraticCurveTo(ax + 12 * s, ay - 44 * s, ax - 2 * s, ay - 62 * s + breath);
+  g.quadraticCurveTo(ax - 14 * s, ay - 64 * s + breath, ax - 20 * s, ay - 52 * s + breath);
+  g.quadraticCurveTo(ax - 18 * s, ay - 34 * s, ax - 10 * s, ay - 18 * s);
+  g.closePath(); g.fill();
+  // руки к удилищу
+  g.strokeStyle = '#17100a'; g.lineCap = 'round'; g.lineWidth = 7 * s;
+  g.beginPath(); g.moveTo(ax - 8 * s, ay - 54 * s + breath); g.quadraticCurveTo(ax - 22 * s, ay - 46 * s, ax - 30 * s, ay - 40 * s + sway * 0.2); g.stroke();
+  g.lineWidth = 6 * s;
+  g.beginPath(); g.moveTo(ax - 2 * s, ay - 50 * s + breath); g.quadraticCurveTo(ax - 12 * s, ay - 36 * s, ax - 22 * s, ay - 32 * s); g.stroke();
+  // голова, шея, шляпа
+  g.beginPath(); g.ellipse(ax - 8 * s, ay - 70 * s + breath, 8.5 * s, 9.5 * s, -0.2, 0, 6.29); g.fill();
+  g.beginPath(); g.ellipse(ax - 8 * s, ay - 77 * s + breath, 17 * s, 4 * s, -0.12, 0, 6.29); g.fill();
+  g.beginPath(); g.moveTo(ax - 17 * s, ay - 78 * s + breath); g.quadraticCurveTo(ax - 9 * s, ay - 93 * s + breath, ax + 1 * s, ay - 79 * s + breath); g.fill();
+  g.fillStyle = 'rgba(255,180,110,0.25)';
+  g.beginPath(); g.ellipse(ax - 9 * s, ay - 80 * s + breath, 9 * s, 1.6 * s, -0.12, 0, 6.29); g.fill();
+  // ведро
+  g.fillStyle = '#1c140c';
+  g.beginPath(); g.moveTo(ax + 34 * s, ay - 22 * s); g.lineTo(ax + 54 * s, ay - 22 * s); g.lineTo(ax + 51 * s, ay); g.lineTo(ax + 37 * s, ay); g.closePath(); g.fill();
+  g.strokeStyle = '#1c140c'; g.lineWidth = 1.5 * s;
+  g.beginPath(); g.arc(ax + 44 * s, ay - 22 * s, 10 * s, Math.PI, 0); g.stroke();
+  // удочка
+  const tipx = ax - 190 * s, tipy = ay - 150 * s + sway;
+  g.strokeStyle = '#17100a'; g.lineWidth = 3 * s;
+  g.beginPath(); g.moveTo(ax - 14 * s, ay - 28 * s); g.quadraticCurveTo(ax - 90 * s, ay - 120 * s, tipx, tipy); g.stroke();
   // леска и поплавок
   const fx = W * 0.36, fy = hzY + (H - hzY) * 0.32;
   g.strokeStyle = 'rgba(255,230,200,0.45)'; g.lineWidth = 1;

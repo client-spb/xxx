@@ -101,8 +101,8 @@ function bindUi() {
     if (G.phase !== 'idle') { toast('Сначала смотай снасть'); return; }
     sfxClick(); G.paused = true; openTackle(G.rigType, 'fish');
   });
-  on('pzKeep', 'click', () => { sfxClick(); closeOverlay('ov-pause'); G.paused = false; openKeep(); });
-  on('pzHelp', 'click', () => { sfxClick(); closeOverlay('ov-pause'); G.paused = false; renderHelp(); });
+  on('pzKeep', 'click', () => { sfxClick(); closeOverlay('ov-pause'); G.paused = false; lastTs = performance.now(); refreshMusic(true); openKeep(); });
+  on('pzHelp', 'click', () => { sfxClick(); closeOverlay('ov-pause'); G.paused = false; lastTs = performance.now(); refreshMusic(true); renderHelp(); });
   on('pzLeave', 'click', () => {
     sfxClick();
     askConfirm('Уехать с водоёма?', 'Улов из садка будет продан скупщику автоматически.', 'Уехать', () => { leaveSession(); });
