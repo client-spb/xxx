@@ -1,5 +1,5 @@
 'use strict';
-/* Автоматически собранный список ресурсов (tools/gen_manifest.py). Всего: 44.2 МБ, файлов: 184 */
+/* Автоматически собранный список ресурсов (tools/gen_manifest.py). Всего: 23.6 МБ, файлов: 175 */
 const MANIFEST = [
   {"p": "assets/fonts/Neucha-cyrillic.woff2", "s": 19308, "t": "font", "family": "Neucha", "range": "U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116", "weight": "normal"},
   {"p": "assets/fonts/Neucha-latin.woff2", "s": 25376, "t": "font", "family": "Neucha", "range": "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD", "weight": "normal"},
@@ -141,16 +141,7 @@ const MANIFEST = [
   {"p": "assets/bg/volga_day.jpg", "s": 337145, "t": "img"},
   {"p": "assets/bg/volga_evening.jpg", "s": 358204, "t": "img"},
   {"p": "assets/bg/volga_night.jpg", "s": 354802, "t": "img"},
-  {"p": "assets/music/lake.mp3", "s": 2469661, "t": "media"},
-  {"p": "assets/music/menu.mp3", "s": 2743947, "t": "media"},
-  {"p": "assets/music/mountain.mp3", "s": 2505710, "t": "media"},
-  {"p": "assets/music/night.mp3", "s": 2561089, "t": "media"},
-  {"p": "assets/music/north.mp3", "s": 2401220, "t": "media"},
-  {"p": "assets/music/pond.mp3", "s": 2586167, "t": "media"},
-  {"p": "assets/music/river.mp3", "s": 2527653, "t": "media"},
-  {"p": "assets/music/shop.mp3", "s": 1715767, "t": "media"},
-  {"p": "assets/music/swamp.mp3", "s": 2478543, "t": "media"},
-  {"p": "assets/music/volga.mp3", "s": 2668192, "t": "media"},
+  {"p": "assets/music/menu.mp3", "s": 3001514, "t": "media"},
   {"p": "assets/amb/birds.mp3", "s": 840821, "t": "media"},
   {"p": "assets/amb/night.mp3", "s": 813027, "t": "media"},
   {"p": "assets/amb/north.mp3", "s": 813027, "t": "media"},

@@ -39,7 +39,7 @@ const AUD = (() => {
     if (!ctx) return;
     const t = ctx.currentTime;
     sfxBus.gain.setTargetAtTime(SAVE.sound ? 1 : 0, t, 0.05);
-    musBus.gain.setTargetAtTime(SAVE.music ? 0.5 : 0, t, 0.2);
+    musBus.gain.setTargetAtTime(SAVE.music ? 0.42 : 0, t, 0.2);
     ambBus.gain.setTargetAtTime(SAVE.amb ? 0.75 : 0, t, 0.2);
     for (const k in media) {
       const m = media[k];

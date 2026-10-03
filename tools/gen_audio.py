@@ -403,7 +403,7 @@ def compose(name, key, scale, bpm, prog, bars, lead, accomp, seed, beats=4, extr
 
 
 MUSIC = {
-    'menu':     dict(key='D', scale='major', bpm=84, prog=[0, 4, 5, 3, 0, 4, 3, 4], bars=48, lead='accordion', accomp='arp', seed=1, extras=('pad', 'shaker'), rev=0.3, swing=0.12),
+    'menu':     dict(key='D', scale='major', bpm=64, prog=[0, 5, 3, 4, 0, 5, 1, 4], bars=40, lead='piano', accomp='arp', seed=11, extras=('pad',), rev=0.42, lead_oct=4),
     'pond':     dict(key='G', scale='major', bpm=104, prog=[0, 3, 4, 0, 5, 3, 4, 0], bars=56, lead='balalaika', accomp='oompah', seed=2, extras=('wood',), rev=0.22),
     'river':    dict(key='E', scale='minor', bpm=76, prog=[0, 5, 2, 6, 0, 3, 6, 4], bars=40, lead='flute', accomp='arp', seed=3, extras=('pad',), rev=0.32, swing=0.08),
     'lake':     dict(key='F', scale='major', bpm=70, prog=[0, 5, 3, 4, 0, 2, 3, 4], bars=36, lead='piano', accomp='pad', seed=4, extras=('bells',), rev=0.4),
@@ -419,6 +419,11 @@ MUSIC = {
 def gen_music(name):
     cfg = dict(MUSIC[name])
     st = compose(name, **cfg)
+    if name == 'menu':
+        # мягкий тёплый звук: срезаем верха, без резких пиков
+        for ch in range(2):
+            st[:, ch] = fft_filter(st[:, ch], hi=2200, order=2)
+        st = normalize(st, 0.7)
     p = os.path.join(ROOT, 'music', name + '.mp3')
     write_mp3(p, st, '160k')
     return name, os.path.getsize(p)

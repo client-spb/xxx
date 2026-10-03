@@ -102,7 +102,7 @@ function refreshMusic(force) {
     if (G.paused) return;
     const tod = todOf(SAVE.clock);
     const night = tod === 'night';
-    AUD.music(night ? 'night' : G.L.music);
+    AUD.stopMusic();
     let amb = G.L.amb;
     if (night) amb = { swamp: 'swamp', mountain: 'rapids', north: 'north', river: 'river' }[G.loc] || 'night';
     if (SAVE.weather === 'rain') amb = 'rain';
@@ -110,7 +110,7 @@ function refreshMusic(force) {
   } else if (['menu', 'map'].includes(currentScreen)) {
     AUD.music('menu'); AUD.stopAmb();
   } else if (['shop', 'tackle'].includes(currentScreen)) {
-    if (UI.returnTo !== 'fish') { AUD.music('shop'); AUD.stopAmb(); }
+    if (UI.returnTo !== 'fish') { AUD.music('menu'); AUD.stopAmb(); }
   }
 }
 function todayStr() { const d = new Date(); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
