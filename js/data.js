@@ -108,7 +108,7 @@ const LOCATIONS = {
     sizeMul: { karp: 0.8, amur: 0.8 }, junk: 0.08, color: '#6f8fae',
   },
   swamp: {
-    rate: 0.9, name: 'Туманное болото', short: 'Болото', level: 8, ticket: 250, hz: 0.54, music: 'swamp', amb: 'swamp',
+    rate: 1.15, name: 'Туманное болото', short: 'Болото', level: 8, ticket: 250, hz: 0.54, music: 'swamp', amb: 'swamp',
     desc: 'Затянутая туманом топь среди мёртвых деревьев. Здесь водятся гигантские караси, лини и злые щуки.',
     depth: [[2, 0.3], [8, 1], [20, 1.8], [40, 2.5], [100, 2.7]], current: 0, snags: 0.55, waves: 0.15,
     fish: { karas: 1.0, serkaras: 0.8, rotan: 1.0, lin: 0.6, vyun: 0.6, shchuka: 0.45, okun: 0.4 },
@@ -122,14 +122,14 @@ const LOCATIONS = {
     sizeMul: {}, junk: 0.05, color: '#7c8a9e',
   },
   volga: {
-    rate: 1.7, name: 'Великая Волга', short: 'Волга', level: 14, ticket: 800, hz: 0.50, music: 'volga', amb: 'wind',
+    rate: 2.1, name: 'Великая Волга', short: 'Волга', level: 14, ticket: 800, hz: 0.50, music: 'volga', amb: 'wind',
     desc: 'Широкая матушка-Волга. На ямах живут сомы-великаны, а в глубине бродит сама белуга.',
     depth: [[2, 1], [15, 3], [35, 7], [55, 12], [80, 16], [110, 18], [200, 20]], current: 0.25, snags: 0.3, waves: 0.7,
     fish: { leshch: 0.7, sazan: 0.4, zherekh: 0.4, sudak: 0.5, som: 0.2, sterlyad: 0.2, beluga: 0.008, shchuka: 0.3, gustera: 0.6, plotva: 0.6 },
     sizeMul: {}, junk: 0.09, color: '#c9a46f',
   },
   north: {
-    rate: 1.9, name: 'Карельское озеро', short: 'Карелия', level: 18, ticket: 1300, hz: 0.53, music: 'north', amb: 'north',
+    rate: 2.5, name: 'Карельское озеро', short: 'Карелия', level: 18, ticket: 1300, hz: 0.53, music: 'north', amb: 'north',
     desc: 'Гранитные берега, сосны и северное сияние. Голец, сиг и серебряный озёрный лосось.',
     depth: [[2, 1.2], [10, 4], [25, 9], [50, 15], [90, 22], [200, 25]], current: 0, snags: 0.35, waves: 0.5,
     fish: { ryapushka: 0.9, sig: 0.6, palia: 0.35, losos: 0.14, shchuka: 0.45, okun: 0.6, nalim: 0.3, harius: 0.3 },
