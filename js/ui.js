@@ -567,7 +567,7 @@ function openKeep() {
   for (const f of sorted) {
     const r = el('div', 'kp-row', '<img alt=""><span></span><em></em><b></b>');
     r.querySelector('img').src = imgSrc(fishPath(f.id));
-    r.querySelector('span').textContent = SPECIES[f.id].name + (f.trophy ? ' ★' : '');
+    r.querySelector('span').textContent = SPECIES[f.id].name + (f.trophy ? ' (трофей)' : '');
     r.querySelector('em').textContent = fmtKg(f.w);
     r.querySelector('b').textContent = fmtMoney(f.value);
     list.appendChild(r);
